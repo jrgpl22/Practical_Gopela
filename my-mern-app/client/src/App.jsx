@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useEffect, useState } from "react";
-
+const API = import.meta.env.VITE_API_URL || "http://localhost:5000";
 function App() {
 
     const [students, setStudents] = useState([]);
@@ -12,8 +12,7 @@ function App() {
     const [editingId, setEditingId] = useState(null);
 
     const getStudents = () => {
-        axios
-            .get("http://localhost:5000/students")
+        axios.get(`${API}/students`)
             .then((response) => {
                 setStudents(response.data);
             });
@@ -38,15 +37,13 @@ function App() {
         };
 
         if (editingId === null) {
-            axios
-                .post("http://localhost:5000/students", studentData)
+           axios.post(`${API}/students`, studentData)
                 .then(() => {
                     getStudents();
                     resetForm();
                 });
         } else {
-            axios
-                .put("http://localhost:5000/students/" + editingId, studentData)
+           axios.put(`${API}/students/${editingId}`, studentData)
                 .then(() => {
                     getStudents();
                     resetForm();
@@ -62,8 +59,7 @@ function App() {
     };
 
     const handleDelete = (id) => {
-        axios
-            .delete("http://localhost:5000/students/" + id)
+          axios.delete(`${API}/students/${id}`)
             .then(() => {
                 getStudents();
             });
